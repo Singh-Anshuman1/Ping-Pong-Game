@@ -7,12 +7,12 @@ import time
 screen = Screen()
 screen.bgcolor("black")
 screen.setup(800, 600)
-screen.title("PING PONG GAME")
+screen.title("PING PONG GAME   (TYPE ESC TO EXIT)")
 screen.tracer(0)
 paddle_r = Paddle(350)
 paddle_l = Paddle(-350)
 ball = Ball()
-scoreboard=Scoreboard()
+scoreboard = Scoreboard()
 
 screen.listen()
 screen.onkey(paddle_r.go_down, "Down")
@@ -21,8 +21,21 @@ screen.onkey(paddle_l.go_down, "s")
 screen.onkey(paddle_l.go_up, "w")
 
 game = True
+
+
+def end_game():
+    global game
+    ball.hideturtle()
+    paddle_l.hideturtle()
+    paddle_r.hideturtle()
+    scoreboard.game_over()
+    game = False
+
+
+screen.onkey(end_game, "Escape")
 while game:
-    time.sleep(0.1)
+
+    time.sleep(ball.move_speed)
     screen.update()
     ball.move()
     # detect collision with upper or lower wall
@@ -41,6 +54,5 @@ while game:
         ball.reset_positon()
         scoreboard.clear()
         scoreboard.r_point()
-
 
 screen.exitonclick()
